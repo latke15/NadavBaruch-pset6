@@ -62,6 +62,12 @@ class ViewController: UIViewController {
             
             let dict = try! JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
             
+            let shabbat = parse(dict: dict!) as? shabbat
+            
+            DispatchQueue.main.async {
+                self.performSegue(withIdentifier: "secondVCID", sender: shabbat!)
+            }
+            
         }
         task.resume()
         self.loadView()
@@ -74,6 +80,16 @@ class ViewController: UIViewController {
         alertController.addAction(alertAction)
         present(alertController, animated: true, completion: nil)
     }
+    
+    // segue contents to the rawtext variable in the the next view
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        // check if we go to 2nd VC
+        if segue.identifier == "secondVCID" {
+            if let destination = segue.destination as? SecondViewController {
+                destination.result = sender as? shabbat
+            }
+        }
 
 
 }

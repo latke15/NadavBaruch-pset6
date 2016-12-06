@@ -9,11 +9,15 @@
 import UIKit
 
 class SecondViewController: UIViewController {
+    
+    @IBOutlet weak var candleLighting: UILabel!
+    var result:shabbat!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
+        candleLighting.text = result.candleLighting
+        
     }
 
     override func didReceiveMemoryWarning() {
