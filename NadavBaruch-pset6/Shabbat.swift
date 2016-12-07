@@ -9,7 +9,7 @@
 import Foundation
 
 class shabbat {
-   var Candle lighing = ""
+   var Candlelighting = ""
 }
 
 func parse(json data: Data) -> [String: Any]? {
@@ -25,7 +25,7 @@ func parse(dict dictionary: [String: Any]) -> shabbat! {
     let result = shabbat()
     
     if let candleLighting = dictionary["Candle Lighting"] {
-        result.candleLighting = candleLighting as! String
+        result.Candlelighting = candleLighting as! String
     }
     
     return result

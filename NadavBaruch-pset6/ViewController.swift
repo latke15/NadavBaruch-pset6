@@ -33,7 +33,7 @@ class ViewController: UIViewController {
         let countryCode = countryCodeInput.text
         let city = cityInput.text
         
-        let url = URL(string: "https://www.hebcal.com/shabbat/?cfg=json&city=" + countryCode + "-" + city + "&m=50")
+        let url = URL(string: "https://www.hebcal.com/shabbat/?cfg=json&city=" + countryCode! + "-" + city! + "&m=50")
         let task = URLSession.shared.dataTask(with: url!) { data, response, error in
             guard error == nil else {
                 self.showAlertView(title:"Attention!", withDescription:"Error occured!", buttonText:"Understood!")
