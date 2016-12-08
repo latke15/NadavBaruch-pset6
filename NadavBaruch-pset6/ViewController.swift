@@ -12,19 +12,14 @@ class ViewController: UIViewController {
     @IBOutlet weak var countryCodeInput: UITextField!
     @IBOutlet weak var cityInput: UITextField!
     
-    let myJson = String()
-//    var countryCode = String()
-//    var city = String()
+//    var shabbatInfo = [String: AnyObject]()
+    var result: shabbat?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     @IBAction func checkShabbat(_ sender: Any) {
         if countryCodeInput.text == "" || cityInput.text == "" {
             showAlertView(title: "Attention!", withDescription: "You forgot your input!", buttonText: "Understood!")
@@ -34,6 +29,8 @@ class ViewController: UIViewController {
         let city = cityInput.text
         
         let url = URL(string: "https://www.hebcal.com/shabbat/?cfg=json&city=" + countryCode! + "-" + city! + "&m=50")
+//        print(url!)
+//        print(shabbat())
         let task = URLSession.shared.dataTask(with: url!) { data, response, error in
             guard error == nil else {
                 self.showAlertView(title:"Attention!", withDescription:"Error occured!", buttonText:"Understood!")
@@ -60,17 +57,31 @@ class ViewController: UIViewController {
             }
             
             
-            let dict = try! JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+            let myJSON = try! JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String : Any]
+            //print(myJSON!)
+            let shabbat = parse(dict: myJSON! as! [String : Any]) as? shabbat
+            if let items = myJSON!["items"] as? [[String: AnyObject]] {
+                if let title = items[0] as? [[String : AnyObject]]{
+                    for row in title{
+                        let candle = row["title"] as! [[String : AnyObject]]
+                            print(candle)
+                    }
+                }
+            }
+//            let items = dict?["items"]
+//            print(items[0]["date"])
+//                if let candleLighting = items["title"] {
+//                    result.candleLighting = candleLighting as! String
+//                    print(candleLighting)
             
-            let shabbat = parse(dict: dict!) as? shabbat
             
             DispatchQueue.main.async {
+//                self.shabbatInfo = dict as! [String : AnyObject]
                 self.performSegue(withIdentifier: "secondVCID", sender: shabbat!)
             }
             
         }
         task.resume()
-        self.loadView()
     }
     
     // Show an alert
@@ -93,4 +104,4 @@ class ViewController: UIViewController {
 
 
 }
-
+}
